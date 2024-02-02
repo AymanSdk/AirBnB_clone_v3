@@ -12,8 +12,6 @@ from models.review import Review
 from models.state import State
 from models.user import User
 
-classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
 
 
 class FileStorage:
@@ -23,6 +21,10 @@ class FileStorage:
     __file_path = "file.json"
     # dictionary - empty but will store all objects by <class name>.id
     __objects = {}
+
+    __classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
+
 
     def all(self, cls=None):
         """returns the dictionary __objects"""
@@ -54,7 +56,7 @@ class FileStorage:
             with open(self.__file_path, 'r') as f:
                 jo = json.load(f)
             for key in jo:
-                self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
+                self.__objects[key] = self.__classes[jo[key]["__class__"]](**jo[key])
         except Exception as ex:
             pass
 
@@ -76,8 +78,9 @@ class FileStorage:
         """
         if cls not in self.__classes:
             return None
-
-        return self.__session.query(self.__classes[cls]).get(id)
+        id_str = cls + '.' + id
+        if id_str in self.__objects:
+            return self.__objects[id_str]
 
     def count(self, cls=None):
         """
@@ -86,4 +89,4 @@ class FileStorage:
         if cls is not None:
             return len(self.all(cls))
         else:
-            return sum(len(self.all(c)) for c in classes.values())
+            return sum(len(self.all(c)) for c in self.__classes.values())
