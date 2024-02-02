@@ -114,27 +114,36 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
-# adding get and count methods unittest for file_storage added by aymanesdk
-    def test_get(self):
-        '''
-            Test if get method retrieves obj requested
-        '''
-        new_state = State(name="NewYork")
-        storage.new(new_state)
-        key = "State.{}".format(new_state.id)
-        result = storage.get("State", new_state.id)
-        self.assertTrue(result.id, new_state.id)
-        self.assertIsInstance(result, State)
 
+# create unittest for (get - counts) methods
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_get(self):
+        """Test that get method returns the object by class and id"""
+        state = State(name="California")
+        state.save()
+        state_id = state.id
+        self.assertEqual(state, models.storage.get("State", state_id))
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_count(self):
-        '''
-            Test if count method returns expected number of objects
-        '''
-        old_count = storage.count("State")
-        new_state1 = State(name="NewYork")
-        storage.new(new_state1)
-        new_state2 = State(name="Virginia")
-        storage.new(new_state2)
-        new_state3 = State(name="California")
-        storage.new(new_state3)
-        self.assertEqual(old_count + 3, storage.count("State"))
+        """Test that count method returns the number of objects in storage"""
+        count = models.storage.count()
+        state = State(name="California")
+        state.save()
+        self.assertEqual(models.storage.count(), count + 1)
+        city = City(name="San Francisco")
+        city.save()
+        self.assertEqual(models.storage.count(), count + 2)
+        amenity = Amenity(name="Wifi")
+        amenity.save()
+        self.assertEqual(models.storage.count(), count + 3)
+        place = Place(name="My_little_house")
+        place.save()
+        self.assertEqual(models.storage.count(), count + 4)
+        review = Review(text="Great place")
+        review.save()
+        self.assertEqual(models.storage.count(), count + 5)
+        user = User(email="Aymane.sdk123gmail.com")
+        user.save()
+        self.assertEqual(models.storage.count(), count + 6)
