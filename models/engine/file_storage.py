@@ -12,6 +12,9 @@ from models.review import Review
 from models.state import State
 from models.user import User
 
+classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
+
 
 class FileStorage:
     """serializes instances to a JSON file & deserializes back to instances"""
@@ -20,15 +23,6 @@ class FileStorage:
     __file_path = "file.json"
     # dictionary - empty but will store all objects by <class name>.id
     __objects = {}
-
-    __classes = {
-        "Amenity": Amenity,
-        "BaseModel": BaseModel,
-        "City": City,
-        "Place": Place,
-        "Review": Review,
-        "State": State,
-        "User": User}
 
     def all(self, cls=None):
         """returns the dictionary __objects"""
@@ -60,9 +54,8 @@ class FileStorage:
             with open(self.__file_path, 'r') as f:
                 jo = json.load(f)
             for key in jo:
-                self.__objects[key] = self.__classes[jo[key]
-                                                     ["__class__"]](**jo[key])
-        except Exception as ex:
+                self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
+        except:
             pass
 
     def delete(self, obj=None):
@@ -77,21 +70,23 @@ class FileStorage:
         self.reload()
 
     def get(self, cls, id):
-        """
-        Returns the object based on the class name and its ID, or
-        None if not found
-        """
-        if cls not in self.__classes:
-            return None
-        id_str = cls + '.' + id
-        if id_str in self.__objects:
-            return self.__objects[id_str]
+            """retrieve one object
+            Args:
+                cls: class name
+                id: string representing the object ID
+            Returns:
+                object if found, None if not found
+            """
+            if cls not in classes.values():
+                return None
+            clas = self.all(cls).values()
+            for _cls in clas:
+                if _cls.id == id:
+                    return (_cls)
 
     def count(self, cls=None):
-        """
-        Returns The number of objects in the database.
-        """
+        """count the number of objects in the database"""
         if cls:
             return len(self.all(cls))
         else:
-            return sum(len(self.all(c)) for c in self.__classes.values())
+            return sum(len(self.all(c)) for c in classes.values())
