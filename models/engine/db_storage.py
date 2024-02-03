@@ -89,7 +89,7 @@ class DBStorage:
         """
         Returns The number of objects in the database.
         """
-        if cls is not None:
+        if cls:
             return len(self.all(cls))
         else:
             return sum(len(self.all(c)) for c in classes.values())
