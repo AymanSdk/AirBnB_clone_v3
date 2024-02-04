@@ -10,7 +10,7 @@ def status():
     """return status of the api"""
     return jsonify({"status": "OK"})
 
-@app_views.route('/stats', methods=['GET'], strict_slaches=False)
+@app_views.route('/stats', methods=['GET'], strict_slashes=False)
 def stats():
     """return stats of the api"""
     classes = {"amenities": "Amenity", "cities": "City","places": "Place",
