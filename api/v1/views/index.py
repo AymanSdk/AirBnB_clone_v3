@@ -14,7 +14,7 @@ def status():
 def stats():
     """return stats of the api"""
     classes = {"amenities": "Amenity", "cities": "City","places": "Place",
-               "reviews": "Review", "states": "Satet", "users": "User"}
+               "reviews": "Review", "states": "State", "users": "User"}
     statsCls = {}
     for key, value in classes.items():
         statsCls[key] = storage.count(value)
