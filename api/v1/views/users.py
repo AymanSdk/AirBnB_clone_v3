@@ -1,4 +1,4 @@
-#!/usr/bin.python3
+#!/usr/bin/python3
 """ users view """
 
 from flask import jsonify, abort, request
