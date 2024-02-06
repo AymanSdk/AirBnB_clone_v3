@@ -1,4 +1,4 @@
-#!/usr/bin.python3
+#!/usr/bin/python3
 """ places view for api """
 
 from api.v1.views import app_views
