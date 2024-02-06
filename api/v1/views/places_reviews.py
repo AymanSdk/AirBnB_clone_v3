@@ -10,7 +10,7 @@ from models.user import User
 
 
 @app_views.route('/places/<place_id>/reviews', methods=['GET'],
-                    strict_slashes=False)
+                 strict_slashes=False)
 def get_reviews(place_id):
     """ get reviews by place id """
     place = storage.get(Place, place_id)
@@ -30,7 +30,7 @@ def get_review(review_id):
 
 
 @app_views.route('/reviews/<review_id>', methods=['DELETE'],
-                    strict_slashes=False)
+                 strict_slashes=False)
 def delete_review(review_id):
     """ delete review by id """
     review = storage.get(Review, review_id)
@@ -42,7 +42,7 @@ def delete_review(review_id):
 
 
 @app_views.route('/places/<place_id>/reviews', methods=['POST'],
-                    strict_slashes=False)
+                 strict_slashes=False)
 def post_review(place_id):
     """ post a new review """
     place = storage.get(Place, place_id)
@@ -74,7 +74,12 @@ def put_review(review_id):
     if data is None:
         abort(400, 'Not a JSON')
     for key, value in data.items():
-        if key not in ['id', 'user_id', 'place_id', 'created_at', 'updated_at']:
+        if key not in [
+            'id',
+            'user_id',
+            'place_id',
+            'created_at',
+                'updated_at']:
             setattr(review, key, value)
     review.save()
     return jsonify(review.to_dict()), 200
