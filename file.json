@@ -142,5 +142,17 @@
         "created_at": "2024-02-04T17:20:58.565782",
         "updated_at": "2024-02-04T17:20:58.566007",
         "__class__": "User"
+    },
+    "User.feab3074-96bd-4d40-ae98-da4ff255d2df": {
+        "id": "feab3074-96bd-4d40-ae98-da4ff255d2df",
+        "created_at": "2024-02-08T21:24:45.843418",
+        "updated_at": "2024-02-08T21:24:45.843593",
+        "__class__": "User"
+    },
+    "Place.d4c6678d-4869-4cc7-abd9-04fec40f324c": {
+        "id": "d4c6678d-4869-4cc7-abd9-04fec40f324c",
+        "created_at": "2024-02-08T21:25:29.167884",
+        "updated_at": "2024-02-08T21:25:29.167930",
+        "__class__": "Place"
     }
 }
